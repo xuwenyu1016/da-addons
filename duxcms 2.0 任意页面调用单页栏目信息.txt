@@ -1,0 +1,37 @@
+
+编写： 安达 81070149@qq.com 服务：www.duxcms.com
+
+
+
+标签：<!--echo{app="page" label="content" class_id=2 name="content" }-->
+
+参数说明： 固定参数 【app】  【label】 自定义参数 【class_id】为你的频道编号 【name】为要调用字段的名称
+
+文件添加：
+
+在文件/app/page/service 下面新建 LabelService.php 内容为
+
+<?php
+namespace app\page\service;
+/**
+ * 标签接口
+ */
+class LabelService{
+	 /**
+     * 碎片调用
+     */
+    public function content($data){
+        if(empty($data['class_id'])){
+            return 'class_id null';
+        }
+        if(empty($data['name'])){
+            $data['name'] = 'name';
+        }
+        $info = target('page/CategoryPage')->getInfo($data['class_id']);
+        if(empty($info)){
+            return '暂无内容';
+        }
+        return htmlspecialchars_decode(html_out($info[$data['name']]));
+    }
+
+}
